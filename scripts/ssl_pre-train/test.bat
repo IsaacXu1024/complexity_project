@@ -1,0 +1,1 @@
+python ../../main.py --method "simsiam" --train_cfg "simsiam.cfg" --aug_stack_cfg "simclr_cifar.cfg" --filter_cfg "machine_animal.cfg" --nodes 1 --gpus 1 --name "simsiam_pre-train_test" --windows true
