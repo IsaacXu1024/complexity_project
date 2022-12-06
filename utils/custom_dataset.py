@@ -1,5 +1,4 @@
 import numpy as np
-import torch
 import PIL
 
 import torchvision.datasets as datasets
@@ -31,15 +30,20 @@ class FilteredCIFAR10Dataset(Dataset):
             train=train,
             transform=transform
         )
+        # Set original CIFAR dataset
         self.data = self.cifar10.data
         self.tgts = self.cifar10.targets
+
+        # By default, we do not modify the data
         self.f_data, self.f_tgts = self.data, self.tgts
         self.transform = transform
+
+        # If a class dictionary is given, for how we arrange a subset of the the original classes
         if classes:
             self.classes = classes
-            self.class_limits = self.find_balance()
-            remove_list = self.gen_remove_list()
-            self.f_data, self.f_tgts = self.__remove__(remove_list)
+            self.class_limits = self.find_balance() # determine the classes we need & number of samples/class to balance task 
+            remove_list = self.gen_remove_list() # lists unneeded classes and samples from original dataset
+            self.f_data, self.f_tgts = self.__remove__(remove_list) # removes data points on our list
         #self.sanity_check()
 
     def __getitem__(self, idx):
