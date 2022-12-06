@@ -60,7 +60,7 @@ class SupervisedMethod(pl.LightningModule):
         
         self.cfg: omegaconf.DictConfig = cfg
 
-        # Backbone
+        # backbone
         self.backbone_args: Dict[str, Any] = cfg.backbone.kwargs
 
         kwargs = self.backbone_args.copy()
@@ -80,7 +80,7 @@ class SupervisedMethod(pl.LightningModule):
                 self.backbone = mod_resnet(self.backbone)
         self.backbone = load_model_state(self.backbone, ckpt_path)
     
-        # Classifier
+        # classifier
         self.num_classes: int = cfg.data.num_classes
         self.classifier: nn.Module = nn.Sequential(
             nn.BatchNorm1d(self.features_dim, affine=False),

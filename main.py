@@ -8,7 +8,6 @@ import os
 import torch
 import numpy as np
 
-import torchvision.datasets as datasets
 import torchvision.transforms as transforms
 
 from pytorch_lightning import Trainer
@@ -88,6 +87,7 @@ def main():
         transforms.ToTensor(),               
     ])
 
+    # if we are conducting a linear probe, use custom supervised method, otherwise use SSL method
     if lin_probe:
         model = SupervisedMethod(args.ckpt_path, cfg)
         transform = default_format
@@ -100,6 +100,7 @@ def main():
     filter_name = args.filter_cfg
     filter_data_dict = load_json(filter_name, "filters")
 
+    # if we are looking to filter the training data to a subset of classes, then pass on the filtering information
     if args.filter_train:
         train_dataset = FilteredCIFAR10Dataset(classes=filter_data_dict, transform=transform)
     else:
@@ -149,8 +150,8 @@ def main():
 
     run_name = args.name
     ckpt_args = OmegaConf.create({"name": run_name})
-    # saves the checkout after every epoch
 
+    # saves the checkpoint after every epoch
     ckpt = Checkpointer(
         ckpt_args,
         logdir="../../checkpoints/"+run_name,

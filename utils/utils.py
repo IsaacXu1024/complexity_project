@@ -9,6 +9,7 @@ def load_json(f_name, type):
     return json.loads(cfg_f)
 
 def mod_resnet(resnet_model):
+    # modify resnet architecture for small images
     resnet_model.conv1 = nn.Conv2d(
         3, 64, kernel_size=3, stride=1, padding=2, bias=False
     )
@@ -20,7 +21,7 @@ def set_requires_grad(model, val):
         param.requires_grad = val
 
 def load_model_state(model, ckpt_path, key="state_dict", freeze_encoder=True):
-    # 'state_dict' = key for pre-trained models, 'model' for FB Imagenet
+    # key = 'state_dict' for pre-trained models, 'model' for FB Imagenet
     state = torch.load(ckpt_path)[key] 
     for k in list(state.keys()):
         if "backbone" in k:
