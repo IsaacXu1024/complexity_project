@@ -30,15 +30,15 @@ class FilteredCIFAR10Dataset(Dataset):
             train=train,
             transform=transform
         )
-        # Set original CIFAR dataset
+        # set original CIFAR dataset
         self.data = self.cifar10.data
         self.tgts = self.cifar10.targets
 
-        # By default, we do not modify the data
+        # by default, we do not modify the data
         self.f_data, self.f_tgts = self.data, self.tgts
         self.transform = transform
 
-        # If a class dictionary is given, for how we arrange a subset of the the original classes
+        # if a class dictionary is given, for how we arrange a subset of the the original classes
         if classes:
             self.classes = classes
             self.class_limits = self.find_balance() # determine the classes we need & number of samples/class to balance task 
